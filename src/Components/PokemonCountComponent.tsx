@@ -1,27 +1,41 @@
 import * as React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { PokemonService } from '../PokemonService';
 
 
-const PokemonCountComponent: React.FunctionComponent<{}> = () => {
-    const [_pokemonCount, updatePokemonCount] = useState<number>(0);
-    const [_pokemonCountInProgress, updatePokemonCountInprogress] = useState<boolean>(true);
+export interface IPokemonCountComponentProps {
+}
+
+export interface IPokemonCountComponentState {
+    pokemonCount : number,
+    pokemonCountInProgress : boolean
+}
+
+export default class PokemonCountComponent extends React.Component<IPokemonCountComponentProps, IPokemonCountComponentState> {  
+  constructor(props: IPokemonCountComponentProps) {
+    super(props);
+
+    this.state = {
+        pokemonCount : 0,
+        pokemonCountInProgress : false
+    }
+  }
+
+  componentDidMount = async() =>{
+    await this.setState({
+        pokemonCount : 0,
+        pokemonCountInProgress : true
+    }) 
     const pokemonService = PokemonService();
+    const pokemonCount = await pokemonService.GetPokemonCount();
 
-    useEffect(() => {
-        const getCount = async() => {
-            const pokemonCount = await pokemonService.GetPokemonCount();
-            updatePokemonCount(pokemonCount);
-            updatePokemonCountInprogress(false);
-        }
+    await this.setState({
+        pokemonCount : pokemonCount,
+        pokemonCountInProgress : false
+    }) 
 
-        if(_pokemonCountInProgress){
-            getCount();
-        }        
-    }, [_pokemonCountInProgress])
-  
-    return <p><small>There are <strong>{_pokemonCount}</strong> pokemons in the system.</small></p> ;
-};
+  }
 
-export default PokemonCountComponent;
+  public render() {
+    return <p><small>There are <strong>{this.state.pokemonCount}</strong> pokemons in the system.</small></p> ;
+  }
+}

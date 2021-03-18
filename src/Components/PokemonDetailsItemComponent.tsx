@@ -3,7 +3,6 @@ import * as React from 'react';
 interface IPokemonDetailsItemComponentProps {
     Label : string
     Value : string | number
-
 }
 
 const PokemonDetailsItemComponent: React.FunctionComponent<IPokemonDetailsItemComponentProps> = (props) => {
