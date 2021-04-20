@@ -25,7 +25,7 @@ Plenty of readsons with examples online but I like [this one](https://stories.jo
 
 
 ## Introduction
-`npx create-react-app . template typescript`
+`npx create-react-app . -template typescript`
 
 **Explanation of some common files and folder**
 
